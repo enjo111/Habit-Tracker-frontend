@@ -1,75 +1,82 @@
-# React + TypeScript + Vite
+# Habit Tracker — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive habit-tracking interface built with React and TypeScript.
+Create daily or weekly habits, record check-ins, and follow your daily
+progress.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Registration and login with a JWT-based backend
+- Create, edit, and delete personal habits
+- Daily and weekly habit frequencies
+- Check-ins with duplicate prevention
+- Daily streaks for daily habits
+- Dashboard summaries and daily completion progress
+- Custom delete confirmation dialog
+- Responsive landing page and dashboard
+- Subtle animations with reduced-motion support
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- TypeScript
+- Vite
+- CSS
+- Fetch API
+- ESLint
 
-## Expanding the ESLint configuration
+## Run Locally
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Install dependencies:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm ci
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Start the backend on port 3000 using its own setup instructions.
+Then start the frontend:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+Open the Local URL printed in the terminal.
+
+The Vite development proxy forwards `/api` requests to
+`http://localhost:3000`, removing the `/api` prefix.
+
+## Checks
+
+```bash
+npm run build
+npm run lint
+```
+
+The production build is generated in `dist/`.
+
+## Backend Integration
+
+The frontend connects to an Express API using JWT bearer tokens.
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `GET /habits`
+- `POST /habits`
+- `PATCH /habits/:id`
+- `DELETE /habits/:id`
+- `POST /habits/:id/checks`
+- `GET /habits/:id/streak`
+
+## Current Limitations
+
+- The session is held in memory; refreshing requires logging in again.
+- Check-in status refreshes at login and after a check-in. A dashboard
+  left open across midnight needs to be refreshed and logged into again.
+- Weekly habits support check-ins, but weekly streaks are not implemented.
+- Check-in dates follow the backend server's local date.
+- Production hosting needs an API routing configuration; the development
+  proxy alone does not configure a deployed website.
+
+## Author
+
+Enjo Yohannes
